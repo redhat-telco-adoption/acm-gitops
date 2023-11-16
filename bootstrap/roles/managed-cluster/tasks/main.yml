@@ -1,9 +1,5 @@
 ---
 # tasks file for managed-cluster
-- name: Debug
-  debug:
-    msg: "Creating AWS Managed Cluster"
-
 - name: Create AWS Credentials
   kubernetes.core.k8s:
     state: present
