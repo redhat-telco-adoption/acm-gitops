@@ -1,8 +1,8 @@
 apiVersion: hive.openshift.io/v1
 kind: ClusterDeployment
 metadata:
-  name: "{{ item }}"
-  namespace: "{{ item }}"
+  name: "{{ item.name }}"
+  namespace: "{{ item.name }}"
   labels:
     cloud: AWS
     region: "{{ aws_region }}"
@@ -10,7 +10,7 @@ metadata:
     cluster.open-cluster-management.io/clusterset: default
 spec:
   baseDomain: "{{ baseDomain }}"
-  clusterName: "{{ item }}"
+  clusterName: "{{ item.name }}"
   controlPlaneConfig:
     servingCertificates: {}
   installAttemptsLimit: 1
@@ -18,40 +18,44 @@ spec:
   platform:
     aws:
       credentialsSecretRef:
-        name: "{{ item }}-aws-creds"
+        name: "{{ item.name }}-aws-creds"
       region: "{{ aws_region }}"
   provisioning:
     installConfigSecretRef:
-      name: "{{ item }}-install-config"
+      name: "{{ item.name }}-install-config"
     sshPrivateKeySecretRef:
-      name: "{{ item }}-ssh-private-key"
+      name: "{{ item.name }}-ssh-private-key"
     imageSetRef:
-      name: img4.14.2-multi-appsub
+      name: "{{ item.image }}"
   pullSecretRef:
-    name: "{{ item }}-pull-secret"
+    name: "{{ item.name }}-pull-secret"
 ---
 apiVersion: cluster.open-cluster-management.io/v1
 kind: ManagedCluster
 metadata:
-  name: "{{ item }}"
+  name: "{{ item.name }}"
   labels:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
     cloud: Amazon
     region: "{{ aws_region }}"
     vendor: OpenShift
     cluster.open-cluster-management.io/clusterset: default
+{% for label in item.labels %}
+    {{label.key}}: {{label.value}}
+{% endfor %}
+    
 spec:
   hubAcceptsClient: true
 ---
 apiVersion: hive.openshift.io/v1
 kind: MachinePool
 metadata:
-  name: "{{ item }}-worker"
-  namespace: "{{ item }}"
+  name: "{{ item.name }}-worker"
+  namespace: "{{ item.name }}"
 spec:
   name: worker
   clusterDeploymentRef:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
   platform:
     aws:
       rootVolume:
@@ -65,8 +69,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: "{{ item }}-pull-secret"
-  namespace: "{{ item }}"
+  name: "{{ item.name }}-pull-secret"
+  namespace: "{{ item.name }}"
 stringData:
   .dockerconfigjson: >-
     {{ pullSecret | indent(width=4)}}
@@ -75,8 +79,8 @@ type: kubernetes.io/dockerconfigjson
 apiVersion: v1
 kind: Secret
 metadata:
-  name: "{{ item }}-install-config"
-  namespace: "{{ item }}"
+  name: "{{ item.name }}-install-config"
+  namespace: "{{ item.name }}"
 type: Opaque
 data:
   install-config.yaml: "{{ lookup('ansible.builtin.template', 'install-config.yaml') | b64encode}}"
@@ -84,8 +88,8 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: "{{ item }}-ssh-private-key"
-  namespace: "{{ item }}"
+  name: "{{ item.name }}-ssh-private-key"
+  namespace: "{{ item.name }}"
 stringData:
   ssh-privatekey: |-
     {{ ssh_privatekey | indent(width=4) }}
@@ -95,8 +99,8 @@ apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
-  name: "{{ item }}-aws-creds"
-  namespace: "{{ item }}"
+  name: "{{ item.name }}-aws-creds"
+  namespace: "{{ item.name }}"
 stringData:
   aws_access_key_id: "{{ aws_access_key_id }}"
   aws_secret_access_key: "{{ aws_secret_access_key }}"
@@ -104,11 +108,11 @@ stringData:
 apiVersion: agent.open-cluster-management.io/v1
 kind: KlusterletAddonConfig
 metadata:
-  name: "{{ item }}"
-  namespace: "{{ item }}"
+  name: "{{ item.name }}"
+  namespace: "{{ item.name }}"
 spec:
-  clusterName: "{{ item }}"
-  clusterNamespace: "{{ item }}"
+  clusterName: "{{ item.name }}"
+  clusterNamespace: "{{ item.name }}"
   clusterLabels:
     cloud: Amazon
     vendor: OpenShift

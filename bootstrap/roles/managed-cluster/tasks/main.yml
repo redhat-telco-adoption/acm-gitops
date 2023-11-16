@@ -7,7 +7,7 @@
 
 - name: Create managed cluster namespace
   kubernetes.core.k8s:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
     api_version: v1
     kind: Namespace
     state: present
@@ -19,4 +19,9 @@
     template: cluster-deployment.yaml
   with_items: "{{ managed_clusters }}"
 
-
+- name: Debug Template
+  ansible.builtin.template:
+    src: cluster-deployment.yaml
+    dest: "output/cluster-deployment-{{ item.name }}.yaml"
+  with_items: "{{ managed_clusters }}"
+  when: False
