@@ -1,0 +1,26 @@
+---
+# tasks file for managed-cluster
+- name: Debug
+  debug:
+    msg: "Creating AWS Managed Cluster"
+
+- name: Create AWS Credentials
+  kubernetes.core.k8s:
+    state: present
+    template: aws-credential-secret.yaml
+
+- name: Create managed cluster namespace
+  kubernetes.core.k8s:
+    name: "{{ item }}"
+    api_version: v1
+    kind: Namespace
+    state: present
+  with_items: "{{ managed_clusters }}"
+
+- name: Create ManagedCluster instance
+  kubernetes.core.k8s:
+    state: present
+    template: cluster-deployment.yaml
+  with_items: "{{ managed_clusters }}"
+
+

@@ -1,0 +1,18 @@
+- name: Bootstrap RHACM & GitOps Demo
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars: variables.yaml
+    
+    - name: Install ACM
+      ansible.builtin.include_role:
+        name: acm
+      when: install_acm
+
+    - name: Create Managed Cluster
+      ansible.builtin.include_role:
+        name: managed-cluster
+        
+  

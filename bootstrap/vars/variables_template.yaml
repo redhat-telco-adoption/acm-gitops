@@ -1,0 +1,22 @@
+# Installs ACM in the cluster
+install_acm: True
+
+# ACM version channel
+acm_channel: "release-2.8"
+
+# ACM AWS Credentials
+aws_access_key_id: 
+aws_secret_access_key: 
+aws_region: us-east-1
+baseDomain: 
+pullSecret: >-
+  {}
+ssh_privatekey: |-
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  ...
+  -----END OPENSSH PRIVATE KEY-----
+ssh_publickey: ssh-ed25519 ...
+
+managed_clusters:
+  - managed-cluster-1
+  - managed-cluster-2
