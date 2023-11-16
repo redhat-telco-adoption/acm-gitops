@@ -43,3 +43,13 @@
   delay: 10
   until:
     - multiclusterhub.resources[0].status.phase == 'Running'
+
+- name: Configure GitOps for RHACM
+  kubernetes.core.k8s:
+    state: present
+    template: "{{ item }}"
+  with_items:
+    - gitops/gitopscluster.yaml
+    - gitops/managedclusterset.yaml
+    - gitops/managedclustersetbinding.yaml
+    - gitops/placement.yaml
