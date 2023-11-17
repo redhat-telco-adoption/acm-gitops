@@ -1,0 +1,35 @@
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: service-mesh-policy-placement
+  namespace: openshift-gitops
+spec:
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchExpressions:
+            - key: local-cluster
+              operator: In
+              values:
+                - "true"
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: service-mesh-policy-placement
+  namespace: openshift-gitops
+placementRef:
+  name: service-mesh-policy-placement
+  apiGroup: cluster.open-cluster-management.io
+  kind: Placement
+subjects:
+  - name: distributed-tracing-policy
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
+  - name: kiali-policy
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
+  - name: servicemesh-policy
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
