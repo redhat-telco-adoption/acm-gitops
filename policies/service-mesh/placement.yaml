@@ -24,12 +24,7 @@ placementRef:
   apiGroup: cluster.open-cluster-management.io
   kind: Placement
 subjects:
-  - name: distributed-tracing-policy
+  - name: servicemesh-policy-set
     apiGroup: policy.open-cluster-management.io
-    kind: Policy
-  - name: kiali-policy
-    apiGroup: policy.open-cluster-management.io
-    kind: Policy
-  - name: servicemesh-policy
-    apiGroup: policy.open-cluster-management.io
-    kind: Policy
+    kind: PolicySet
+  
