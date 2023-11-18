@@ -33,3 +33,5 @@ managed_clusters:
 
 #OpenShift Gitops
 gitops_channel: gitops-1.10
+gitops_repo: https://github.com/redhat-telco-adoption/adm-gitops
+github_token: <replace me>
