@@ -18,5 +18,18 @@ ssh_privatekey: |-
 ssh_publickey: ssh-ed25519 ...
 
 managed_clusters:
-  - managed-cluster-1
-  - managed-cluster-2
+  - name: managed-cluster-1
+    image: img4.14.2-multi-appsub
+    labels: 
+      - key: group
+        value: IT
+      - key: type
+        value: primary
+  - name: managed-cluster-2
+    image: img4.12.42-multi-appsub
+    labels: 
+      - key: group
+        value: engineering
+
+#OpenShift Gitops
+gitops_channel: gitops-1.10
