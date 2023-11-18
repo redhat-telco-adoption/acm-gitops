@@ -36,3 +36,7 @@
     state: present
     template: rbac.yaml
 
+- name: Add GitHub Secret
+  kubernetes.core.k8s:
+    state: present
+    template: gitops-git-secret.yaml
