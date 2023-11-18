@@ -2,7 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1beta1
 kind: PolicySet
 metadata:
   name: servicemesh-policy-set
-  namespace: openshift-gitops
+  namespace: policies
 spec:
   description: Install OpenShift ServiceMesh and its dependencies
   policies:

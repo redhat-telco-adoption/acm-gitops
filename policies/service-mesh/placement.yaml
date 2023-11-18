@@ -3,7 +3,7 @@ apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
   name: service-mesh-policy-placement
-  namespace: openshift-gitops
+  namespace: policies
 spec:
   predicates:
     - requiredClusterSelector:
@@ -18,7 +18,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: service-mesh-policy-placement
-  namespace: openshift-gitops
+  namespace: policies
 placementRef:
   name: service-mesh-policy-placement
   apiGroup: cluster.open-cluster-management.io
