@@ -27,6 +27,12 @@
     - multiclusterhubs.operator.open-cluster-management.io
     - multiclusterobservabilities.observability.open-cluster-management.io
 
+- name: |
+    Pause for 30 seconds
+    Waiting for ACM CRDs to be ready ...
+  ansible.builtin.pause:
+    seconds: 30
+
 - name: Create ACM MultiClusterHub instance
   kubernetes.core.k8s:
     state: present
@@ -41,7 +47,10 @@
   register: multiclusterhub
   retries: 60
   delay: 10
-  until:
+  until: 
+    - multiclusterhub.resources is defined
+    - multiclusterhub.resources | length > 0
+    - multiclusterhub.resources[0].status is defined
     - multiclusterhub.resources[0].status.phase == 'Running'
 
 - name: Configure GitOps for RHACM

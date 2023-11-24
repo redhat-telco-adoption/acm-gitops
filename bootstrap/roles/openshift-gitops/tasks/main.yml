@@ -27,7 +27,10 @@
     name: openshift-gitops
     namespace: openshift-gitops
   register: argocd
-  until: argocd.resources[0].status.phase == "Available"
+  until: 
+    - argocd.resources | length > 0
+    - argocd.resources[0].status is defined
+    - argocd.resources[0].status.phase == "Available"
   retries: 30
   delay: 10
 

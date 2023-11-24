@@ -18,4 +18,4 @@
     - name: Create Managed Clusters
       ansible.builtin.include_role:
         name: managed-cluster
-      when: False
+      when: create_managed_clusters

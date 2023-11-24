@@ -8,4 +8,4 @@ resources:
   # Choose one of the two options below
   # See https://docs.openshift.com/container-platform/4.12/service_mesh/v1x/prepare-to-deploy-applications-ossm.html#ossm-tutorial-bookinfo-adding-destination-rules_deploying-applications-ossm-v1x
   - https://raw.githubusercontent.com/Maistra/istio/maistra-2.4/samples/bookinfo/networking/destination-rule-all.yaml
-  - https://raw.githubusercontent.com/Maistra/istio/maistra-2.4/samples/bookinfo/networking/destination-rule-all-mtls.yaml
+  #- https://raw.githubusercontent.com/Maistra/istio/maistra-2.4/samples/bookinfo/networking/destination-rule-all-mtls.yaml
