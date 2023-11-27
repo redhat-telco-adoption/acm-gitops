@@ -2,7 +2,7 @@
 #
 # Requires:
 #  Openshift-GitOps operator be installed in the project "openshift-gitops"
-#  Placement resource "all-openshift-clusters" exists
+#  Placement resource "it-clusters" exists
 #  A clusterSet is bound to the openshift-gitops namespace 
 ---
 apiVersion: apps.open-cluster-management.io/v1beta1
@@ -18,5 +18,5 @@ spec:
   placementRef:
     kind: Placement
     apiVersion: cluster.open-cluster-management.io/v1beta1
-    name: all-openshift-clusters
+    name: it-clusters
     namespace: openshift-gitops

@@ -9,10 +9,10 @@ spec:
     - requiredClusterSelector:
         labelSelector:
           matchExpressions:
-            - key: local-cluster
+            - key: group
               operator: In
               values:
-                - "true"
+                - "IT"
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
