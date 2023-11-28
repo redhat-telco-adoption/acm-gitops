@@ -2,7 +2,7 @@
 #
 # Requires:
 #  Openshift-GitOps operator be installed in the project "openshift-gitops"
-#  Placement resource "it-clusters" exists
+#  Placement resource "engineering-clusters" exists
 #  A clusterSet is bound to the openshift-gitops namespace 
 ---
 apiVersion: apps.open-cluster-management.io/v1beta1
@@ -19,4 +19,20 @@ spec:
     kind: Placement
     apiVersion: cluster.open-cluster-management.io/v1beta1
     name: engineering-clusters
+    namespace: openshift-gitops
+---
+apiVersion: apps.open-cluster-management.io/v1beta1
+kind: GitOpsCluster
+metadata:
+  name: argo-acm-importer-all-clusters
+  namespace: openshift-gitops
+spec:
+  # createBlankClusterSecrets: true
+  argoServer:
+    cluster: notused
+    argoNamespace: openshift-gitops
+  placementRef:
+    kind: Placement
+    apiVersion: cluster.open-cluster-management.io/v1beta1
+    name: all-clusters
     namespace: openshift-gitops

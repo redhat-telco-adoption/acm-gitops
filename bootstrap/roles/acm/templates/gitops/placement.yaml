@@ -18,3 +18,24 @@ spec:
           operator: "In"
           values:
           - engineering
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: all-clusters
+  namespace: openshift-gitops
+spec:
+  tolerations:
+  - key: cluster.open-cluster-management.io/unreachable
+    operator: Exists
+  - key: cluster.open-cluster-management.io/unavailable
+    operator: Exists
+  predicates:
+  - requiredClusterSelector:
+      labelSelector:
+        matchExpressions:
+        - key: group
+          operator: "In"
+          values:
+          - engineering
+          - IT
