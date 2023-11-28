@@ -13,7 +13,7 @@ controlPlane:
         iops: 4000
         size: 100
         type: io1
-      type: m5.xlarge
+      type: "{{ item.aws_instance_type }}"
 compute:
 - hyperthreading: Enabled
   architecture: amd64
@@ -25,7 +25,7 @@ compute:
         iops: 2000
         size: 100
         type: io1
-      type: m5.xlarge
+      type: "{{ item.aws_instance_type }}"
 networking:
   networkType: OVNKubernetes
   clusterNetwork:
