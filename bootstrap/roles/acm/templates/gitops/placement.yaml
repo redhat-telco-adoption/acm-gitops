@@ -2,7 +2,7 @@
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
-  name: it-clusters
+  name: engineering-clusters
   namespace: openshift-gitops
 spec:
   tolerations:
@@ -17,4 +17,4 @@ spec:
         - key: group
           operator: "In"
           values:
-          - IT
+          - engineering

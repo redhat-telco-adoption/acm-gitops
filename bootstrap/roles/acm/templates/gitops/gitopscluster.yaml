@@ -18,5 +18,5 @@ spec:
   placementRef:
     kind: Placement
     apiVersion: cluster.open-cluster-management.io/v1beta1
-    name: it-clusters
+    name: engineering-clusters
     namespace: openshift-gitops
