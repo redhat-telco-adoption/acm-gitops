@@ -62,7 +62,7 @@ spec:
         iops: 2000
         size: 100
         type: io1
-      type: m5.xlarge
+      type: "{{ item.aws_instance_type }}"
   replicas: 0
   skipMachinePools: true
 ---

@@ -19,7 +19,7 @@ spec:
     spec:
       destination:
         server: '{{server}}'
-        namespace: not-used
+        namespace: development
       project: default
       source:
         path: gitops/bookinfo
