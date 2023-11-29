@@ -3,8 +3,6 @@ kind: Subscription
 metadata:
   labels:
     operators.coreos.com/servicemeshoperator.openshift-operators: ""
-  annotations:
-    argocd.argoproj.io/sync-wave: "4"
   name: servicemeshoperator
   namespace: openshift-operators
 spec:
@@ -13,4 +11,3 @@ spec:
   name: servicemeshoperator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: servicemeshoperator.v2.4.5

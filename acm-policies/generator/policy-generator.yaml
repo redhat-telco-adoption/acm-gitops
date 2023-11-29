@@ -1,28 +1,54 @@
+# https://github.com/stolostron/policy-generator-plugin/blob/main/docs/policygenerator-reference.yaml
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
   name: servicemesh-policy-generator
 policyDefaults:
-  namespace: test
+  namespace: policies
+  consolidateManifests: false
+  orderManifests: true
   categories:
     - CM Configuration Management
   standards:
     - NIST SP 800-53
   controls:
     - CM-2 Baseline Configuration
+  complianceType: musthave
+  pruneObjectBehavior: DeleteIfCreated
+  severity: high
+  remediationAction: enforce
+
+policySetDefaults:
+  placement:
+    labelSelector:
+      matchExpressions:
+        - key: group
+          operator: In
+          values:
+            - "IT"
 
 placementBindingDefaults:
   name: servicemesh-policy-placement-binding
 policies:
   - name: distributed-tracing-policy
     manifests:
-      - path: resources/distributed-tracing-subscription.yaml
+      - path: resources/distributed-tracing/namespace.yaml
+      - path: resources/distributed-tracing/operatorgroup.yaml
+      - path: resources/distributed-tracing/subscription.yaml
+      - path: resources/distributed-tracing/clusterserviceversion.yaml
+        remediationAction: inform
+    policySets:
+      - servicemesh-policyset
+  - name: kiali-policy
+    manifests:
+      - path: resources/kiali/subscription.yaml
+    policySets:
+      - servicemesh-policyset
+  - name: servicemesh-policy
+    manifests:
+      - path: resources/servicemesh/subscription.yaml
     policySets:
       - servicemesh-policyset
 policySets:
   - name: servicemesh-policyset
     description: Install OpenShift Service Mesh and its dependencies.
-    #policies:
-    #  - distributed-tracing-policy
-    #placements:
-    #  placementRulePath: resources/placementrule.yaml

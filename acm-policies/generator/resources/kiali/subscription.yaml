@@ -3,8 +3,6 @@ kind: Subscription
 metadata:
   labels:
     operators.coreos.com/kiali-ossm.openshift-operators: ""
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
   name: kiali-ossm
   namespace: openshift-operators
 spec:
@@ -13,4 +11,3 @@ spec:
   name: kiali-ossm
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: kiali-operator.v1.65.11
