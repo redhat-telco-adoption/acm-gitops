@@ -6,6 +6,9 @@ metadata:
   namespace: openshift-distributed-tracing
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+spec:
+  targetNamespaces:
+    - openshift-distributed-tracing
 ---
   apiVersion: operators.coreos.com/v1alpha1
   kind: Subscription
