@@ -1,0 +1,28 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: servicemesh-policy-generator
+policyDefaults:
+  namespace: test
+  categories:
+    - CM Configuration Management
+  standards:
+    - NIST SP 800-53
+  controls:
+    - CM-2 Baseline Configuration
+
+placementBindingDefaults:
+  name: servicemesh-policy-placement-binding
+policies:
+  - name: distributed-tracing-policy
+    manifests:
+      - path: resources/distributed-tracing-subscription.yaml
+    policySets:
+      - servicemesh-policyset
+policySets:
+  - name: servicemesh-policyset
+    description: Install OpenShift Service Mesh and its dependencies.
+    #policies:
+    #  - distributed-tracing-policy
+    #placements:
+    #  placementRulePath: resources/placementrule.yaml
