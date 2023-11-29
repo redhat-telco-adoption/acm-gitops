@@ -43,3 +43,29 @@
   kubernetes.core.k8s:
     state: present
     template: gitops-git-secret.yaml
+
+- name: Patch ArgoCD Resource
+  kubernetes.core.k8s_json_patch:
+    kind: ArgoCD
+    api_version: argoproj.io/v1beta1
+    namespace: openshift-gitops
+    name: openshift-gitops
+    patch:
+      - op: add
+        path: /spec/extraConfig
+        value:
+          resource.customizations: |
+            operators.coreos.com/Subscription:
+              health.lua: |
+                hs = {}
+                hs.status = "Progressing"
+                hs.message = ""
+                if obj.status ~= nil then
+                  if obj.status.state ~= nil then
+                    if obj.status.state == "AtLatestKnown" then
+                      hs.message = obj.status.state .. " - " .. obj.status.currentCSV
+                      hs.status = "Healthy"
+                    end
+                  end
+                end
+                return hs
