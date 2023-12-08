@@ -1,6 +1,9 @@
 # Installs ACM in the cluster
 install_acm: True
 
+# Enable Multicluster Observability
+enable_multicluster_observability: True
+
 # ACM version channel
 acm_channel: "release-2.8"
 
@@ -17,21 +20,31 @@ ssh_privatekey: |-
   -----END OPENSSH PRIVATE KEY-----
 ssh_publickey: ssh-ed25519 ...
 
+# Managed clusters
+create_managed_clusters: False
+
 managed_clusters:
   - name: managed-cluster-1
     image: img4.14.2-multi-appsub
+    aws_instance_type: m5.2xlarge
     labels: 
       - key: group
         value: IT
       - key: type
         value: primary
+      - key: cluster.open-cluster-management.io/clusterset
+        value: it-clusters
+
   - name: managed-cluster-2
     image: img4.12.42-multi-appsub
+    aws_instance_type: m5.2xlarge
     labels: 
       - key: group
         value: engineering
+      - key: cluster.open-cluster-management.io/clusterset
+        value: engineering-clusters
 
 #OpenShift Gitops
 gitops_channel: gitops-1.10
-gitops_repo: https://github.com/redhat-telco-adoption/adm-gitops
+gitops_repo: https://github.com/redhat-telco-adoption/acm-gitops
 github_token: <replace me>
