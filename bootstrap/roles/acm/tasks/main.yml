@@ -47,7 +47,7 @@
   register: multiclusterhub
   retries: 60
   delay: 10
-  until: 
+  until:
     - multiclusterhub.resources is defined
     - multiclusterhub.resources | length > 0
     - multiclusterhub.resources[0].status is defined
@@ -62,3 +62,37 @@
     - gitops/managedclusterset.yaml
     - gitops/managedclustersetbinding.yaml
     - gitops/placement.yaml
+
+- name: Enable Multi Cluster Observability
+  block:
+    - name: Create S3 Bucket
+      amazon.aws.s3_bucket:
+        access_key: "{{ aws_access_key_id }}"
+        secret_key: "{{ aws_secret_access_key }}"
+        region: "{{ aws_region }}"
+        name: "grafana-{{ 'grafana' | to_uuid }}"
+        state: present
+      register: s3_bucket
+    
+    - name: Create Observability namespace
+      kubernetes.core.k8s:
+        name: open-cluster-management-observability
+        api_version: v1
+        kind: Namespace
+        state: present
+    
+    - name: Create Pull Secret
+      kubernetes.core.k8s:
+        state: present
+        template: templates/multicluster-hub-operator-pull-secret.yaml
+    
+    - name: Create Object Storage Secret
+      kubernetes.core.k8s:
+        state: present
+        template: templates/thanos-object-storage.yaml
+        
+    - name: Create MultiClusterObservability CRD
+      kubernetes.core.k8s:
+        state: present
+        template: templates/multiclusterobservability.yaml
+  when: enable_multicluster_observability
