@@ -1,0 +1,33 @@
+- name: Observability
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars: variables.yaml
+    - name: Create S3 Bucket
+      amazon.aws.s3_bucket:
+        access_key: "{{ aws_access_key_id }}"
+        secret_key: "{{ aws_secret_access_key }}"
+        region: "{{ aws_region }}"
+        name: "grafana-{{ 'grafana' | to_uuid }}"
+        state: present
+      register: s3_bucket
+    - name: Create Observability namespace
+      kubernetes.core.k8s:
+        name: open-cluster-management-observability
+        api_version: v1
+        kind: Namespace
+        state: present
+    - name: Create Pull Secret
+      kubernetes.core.k8s:
+        state: present
+        template: multicluster-hub-operator-pull-secret.yaml
+    - name: Create Object Storage Secret
+      kubernetes.core.k8s:
+        state: present
+        template: thanos-object-storage.yaml
+    - name: Create MultiClusterObservability CRD
+      kubernetes.core.k8s:
+        state: present
+        template: multiclusterobservability.yaml
+
